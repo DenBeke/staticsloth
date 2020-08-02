@@ -7,7 +7,7 @@
 ⚠️ **WIP**
 
 A static file server written in Go.
-All configuration is done with environment variabels
+All configuration is done with environment variables.
 
 
 ## Usage
