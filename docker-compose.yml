@@ -1,0 +1,11 @@
+
+version: "3"
+services:
+  staticsloth:
+    container_name: staticsloth
+    # image: denbeke/staticsloth
+    build: .
+    ports:
+      - "1234:1234"
+    volumes: 
+      - .:/var/www/html:ro
