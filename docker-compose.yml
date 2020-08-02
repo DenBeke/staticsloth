@@ -7,5 +7,7 @@ services:
     build: .
     ports:
       - "1234:1234"
+    environment:
+      - ACCESS_LOG=1
     volumes: 
       - .:/var/www/html:ro
