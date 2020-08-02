@@ -1,4 +1,4 @@
-# StaticSloth
+# 🦥 StaticSloth
 
 <!-- [![Build Status](https://travis-ci.com/DenBeke/staticsloth.svg?branch=master)](https://travis-ci.com/DenBeke/staticsloth) -->
 [![Go Report Card](https://goreportcard.com/badge/github.com/DenBeke/staticsloth)](https://goreportcard.com/report/github.com/DenBeke/staticsloth)
