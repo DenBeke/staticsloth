@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	echoLog "github.com/labstack/gommon/log"
 	logMiddleware "github.com/neko-neko/echo-logrus/v2"
 	nekoLog "github.com/neko-neko/echo-logrus/v2/log"
@@ -16,6 +17,11 @@ func Serve(config *Config) {
 	e := echo.New()
 
 	e.HideBanner = true
+
+	// Gzip
+	if config.Gzip {
+		e.Use(middleware.Gzip())
+	}
 
 	// request logging
 	if config.AccessLog {

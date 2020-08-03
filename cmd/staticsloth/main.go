@@ -14,6 +14,8 @@ func main() {
 		log.Fatalln("config file invalid: %v", err)
 	}
 
+	log.Printf("starting StaticSloth with config: %+v", config)
+
 	staticsloth.Serve(config)
 
 }

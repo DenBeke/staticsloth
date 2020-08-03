@@ -12,6 +12,7 @@ var (
 	defaultPathPrefix  = "/"
 	defaultDirectory   = "/var/www/html"
 	defaultAccessLog   = false
+	defaultGzip        = true
 )
 
 // BuildConfigFromEnv populates a StaticSloth config from env variables
@@ -27,6 +28,13 @@ func BuildConfigFromEnv() *Config {
 		config.AccessLog = true
 	}
 
+	gzip := getEnv("GZIP", "1")
+	if gzip == "0" {
+		config.Gzip = false
+	} else {
+		config.Gzip = true
+	}
+
 	return config
 }
 
@@ -36,6 +44,7 @@ type Config struct {
 	PathPrefix  string
 	Directory   string
 	AccessLog   bool
+	Gzip        bool
 }
 
 // Validate validates whether all config is set and valid
