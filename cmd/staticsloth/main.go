@@ -11,7 +11,7 @@ func main() {
 
 	err := config.Validate()
 	if err != nil {
-		log.Fatalln("config file invalid: %v", err)
+		log.Fatalf("config file invalid: %v", err)
 	}
 
 	log.Printf("starting StaticSloth with config: %+v", config)
