@@ -23,6 +23,9 @@ func Serve(config *Config) {
 		e.Use(middleware.Gzip())
 	}
 
+	// Cache Control
+	e.Use(ServerHeaderMiddleware)
+
 	// request logging
 	if config.AccessLog {
 		nekoLog.Logger().SetOutput(os.Stdout)
