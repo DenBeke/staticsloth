@@ -26,6 +26,11 @@ func Serve(config *Config) {
 	// Cache Control
 	e.Use(ServerHeaderMiddleware)
 
+	// Cache Control
+	if len(config.CacheControlPaths) > 0 {
+		e.Use(NewCacheControlMiddleware(config.CacheControlPaths, config.CacheControlDuration).Handle)
+	}
+
 	// request logging
 	if config.AccessLog {
 		nekoLog.Logger().SetOutput(os.Stdout)
@@ -34,6 +39,7 @@ func Serve(config *Config) {
 		e.Use(logMiddleware.Logger())
 	}
 
+	// Real magic is happening here 🦥
 	e.Static(config.PathPrefix, config.Directory)
 
 	e.Logger.Fatal(e.Start(config.HTTPAddress))

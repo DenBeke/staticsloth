@@ -25,7 +25,11 @@ All configuration is done with environment variables.
 
 `ACCESS_LOG`: Displays access logs when set to `1`. Default: `0`
 
-`GZIP`: Compress reponses with gzip. Default: `1`
+`GZIP`: Compress responses with gzip. Default: `1`
+
+`CACHE_CONTROL_PATHS`: List of (comma separated) paths to set `Cache-Control: max-age=X` HTTP header for. Example: `CACHE_CONTROL_PATHS="/assets,/images,/uploads"` Default: none (= disabled)
+
+`CACHE_CONTROL_DURATION`: Duration value (in seconds) that will be set in the `Cache-Control` header. Default: none (= disabled)
 
 
 ## Author

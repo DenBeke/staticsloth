@@ -3,16 +3,19 @@ package staticsloth
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
 var (
-	defaultPort        = 1234
-	defaultHTTPAddress = fmt.Sprintf(":%d", defaultPort)
-	defaultPathPrefix  = "/"
-	defaultDirectory   = "/var/www/html"
-	defaultAccessLog   = false
-	defaultGzip        = true
+	defaultPort                 = 1234
+	defaultHTTPAddress          = fmt.Sprintf(":%d", defaultPort)
+	defaultPathPrefix           = "/"
+	defaultDirectory            = "/var/www/html"
+	defaultAccessLog            = false
+	defaultGzip                 = true
+	defaultCacheControlPaths    = []string{}
+	defaultCacheControlDuration = -1
 )
 
 // BuildConfigFromEnv populates a StaticSloth config from env variables
@@ -23,11 +26,13 @@ func BuildConfigFromEnv() *Config {
 	config.PathPrefix = getEnv("PATH_PREFIX", defaultPathPrefix)
 	config.Directory = getEnv("DIRECTORY", defaultDirectory)
 
+	// access log
 	accessLog := getEnv("ACCESS_LOG", "0")
 	if accessLog == "1" {
 		config.AccessLog = true
 	}
 
+	// gzip
 	gzip := getEnv("GZIP", "1")
 	if gzip == "0" {
 		config.Gzip = false
@@ -35,16 +40,36 @@ func BuildConfigFromEnv() *Config {
 		config.Gzip = true
 	}
 
+	// cache-control
+	cacheControlPaths := getEnv("CACHE_CONTROL_PATHS", "")
+	if cacheControlPaths == "" {
+		config.CacheControlPaths = []string{}
+	} else {
+		config.CacheControlPaths = strings.Split(cacheControlPaths, ",")
+	}
+
+	cacheControlDuration := getEnv("CACHE_CONTROL_DURATION", "")
+	if cacheControlDuration == "" {
+		config.CacheControlDuration = defaultCacheControlDuration
+	} else {
+		duration, err := strconv.Atoi(cacheControlDuration)
+		if err == nil {
+			config.CacheControlDuration = duration
+		}
+	}
+
 	return config
 }
 
 // Config contains all the config for serving a static site
 type Config struct {
-	HTTPAddress string
-	PathPrefix  string
-	Directory   string
-	AccessLog   bool
-	Gzip        bool
+	HTTPAddress          string
+	PathPrefix           string
+	Directory            string
+	AccessLog            bool
+	Gzip                 bool
+	CacheControlPaths    []string
+	CacheControlDuration int
 }
 
 // Validate validates whether all config is set and valid
@@ -61,6 +86,10 @@ func (config *Config) Validate() error {
 	}
 	if config.Directory == "" {
 		return fmt.Errorf("Directory cannot be empty")
+	}
+
+	if len(config.CacheControlPaths) > 0 && config.CacheControlDuration == defaultCacheControlDuration {
+		return fmt.Errorf("CacheControlDuration must be set if CacheControlPaths is set")
 	}
 
 	return nil
