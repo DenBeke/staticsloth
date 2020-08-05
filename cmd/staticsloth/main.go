@@ -7,7 +7,6 @@ import (
 
 func main() {
 
-	log.Println("loading config from env")
 	config := staticsloth.BuildConfigFromEnv()
 
 	err := config.Validate()
