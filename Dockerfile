@@ -22,9 +22,8 @@ COPY --from=build /staticsloth /staticsloth/
 
 WORKDIR /staticsloth
 
-RUN chmod +x /staticsloth
+RUN chmod +x ./staticsloth
 
 EXPOSE 1234
-VOLUME ["/staticsloth"]
 
 CMD ["./staticsloth"]
