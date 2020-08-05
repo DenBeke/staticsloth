@@ -16,6 +16,7 @@ var (
 	defaultGzip                 = true
 	defaultCacheControlPaths    = []string{}
 	defaultCacheControlDuration = -1
+	defaultBlockPaths           = []string{"/.git"}
 )
 
 // BuildConfigFromEnv populates a StaticSloth config from env variables
@@ -58,6 +59,14 @@ func BuildConfigFromEnv() *Config {
 		}
 	}
 
+	// block paths
+	blockPaths := getEnv("BLOCK_PATHS", "")
+	if blockPaths == "" {
+		config.BlockPaths = defaultBlockPaths
+	} else {
+		config.BlockPaths = strings.Split(blockPaths, ",")
+	}
+
 	return config
 }
 
@@ -70,6 +79,7 @@ type Config struct {
 	Gzip                 bool
 	CacheControlPaths    []string
 	CacheControlDuration int
+	BlockPaths           []string
 }
 
 // Validate validates whether all config is set and valid
@@ -90,6 +100,22 @@ func (config *Config) Validate() error {
 
 	if len(config.CacheControlPaths) > 0 && config.CacheControlDuration == defaultCacheControlDuration {
 		return fmt.Errorf("CacheControlDuration must be set if CacheControlPaths is set")
+	}
+
+	if len(config.CacheControlPaths) > 0 {
+		for _, path := range config.CacheControlPaths {
+			if !strings.HasPrefix(path, "/") {
+				return fmt.Errorf("CacheControlPaths (%q) should start with '/'", path)
+			}
+		}
+	}
+
+	if len(config.BlockPaths) > 0 {
+		for _, path := range config.BlockPaths {
+			if !strings.HasPrefix(path, "/") {
+				return fmt.Errorf("BlockPaths (%q) should start with '/'", path)
+			}
+		}
 	}
 
 	return nil

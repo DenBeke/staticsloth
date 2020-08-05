@@ -31,6 +31,8 @@ All configuration is done with environment variables.
 
 `CACHE_CONTROL_DURATION`: Duration value (in seconds) that will be set in the `Cache-Control` header. Default: none (= disabled)
 
+`BLOCK_PATHS`: List of (comma separated) paths to block. Example: `BLOCK_PATHS="/.git"` Default: (= `/.git`)
+
 
 ## Author
 

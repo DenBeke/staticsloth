@@ -26,6 +26,11 @@ func Serve(config *Config) {
 	// Cache Control
 	e.Use(ServerHeaderMiddleware)
 
+	// Block Paths
+	if len(config.BlockPaths) > 0 {
+		e.Use(NewBlockMiddleware(config.BlockPaths).Handle)
+	}
+
 	// Cache Control
 	if len(config.CacheControlPaths) > 0 {
 		e.Use(NewCacheControlMiddleware(config.CacheControlPaths, config.CacheControlDuration).Handle)
