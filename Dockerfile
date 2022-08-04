@@ -1,4 +1,6 @@
-FROM golang:latest AS build
+FROM --platform=$BUILDPLATFORM golang:latest AS build
+
+ARG TARGETARCH
 
 WORKDIR /random_work_dir
 
@@ -11,7 +13,7 @@ RUN go mod download
 COPY / /random_work_dir
 
 
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /staticsloth ./cmd/staticsloth
+RUN GOOS=linux GOARCH=$TARGETARCH CGO_ENABLED=0 go build -o /staticsloth ./cmd/staticsloth
 
 
 FROM alpine:latest

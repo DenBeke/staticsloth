@@ -34,6 +34,11 @@ All configuration is done with environment variables.
 `BLOCK_PATHS`: List of (comma separated) paths to block. Example: `BLOCK_PATHS="/.git"` Default: (= `/.git`)
 
 
+## Multi architecture Docker build
+
+    docker buildx build --platform linux/amd64,linux/arm64,linux/arm --tag denbeke/staticsloth --push
+
+
 ## Author
 
 [Mathias Beke](https://denbeke.be)
